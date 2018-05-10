@@ -1,0 +1,10 @@
+CREATE TABLE token
+(
+  id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  owner int,
+  user_id int,
+  purpose VARCHAR(30) DEFAULT "" NOT NULL,
+  token VARCHAR(100) DEFAULT "" NOT NULL,
+  expires INT DEFAULT 0 NOT NULL,
+  date INT DEFAULT 0 NOT NULL
+);

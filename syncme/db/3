@@ -1,0 +1,7 @@
+CREATE TABLE `role` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `owner` int(11) NOT NULL DEFAULT '0',
+  `name` varchar(75) DEFAULT NULL,
+  `access` varchar(800) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;

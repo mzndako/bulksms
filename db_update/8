@@ -1,0 +1,20 @@
+CREATE TABLE `token` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  owner INT DEFAULT 0 NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `purpose` varchar(30) NOT NULL DEFAULT '',
+  `token` varchar(100) NOT NULL DEFAULT '',
+  `expires` int(11) NOT NULL DEFAULT '0',
+  `date` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE sent_mail
+(
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    owner INT DEFAULT 0 NOT NULL,
+    user_id INT DEFAULT 0 NOT NULL,
+    subject VARCHAR(500) DEFAULT "" NOT NULL,
+    message LONGTEXT NOT NULL,
+    recipient VARCHAR(300) NOT NULL,
+    date INT DEFAULT 0 NOT NULL
+);

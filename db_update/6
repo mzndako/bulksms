@@ -1,0 +1,1 @@
+ALTER TABLE users ADD route INT DEFAULT 0 NOT NULL after gateway;

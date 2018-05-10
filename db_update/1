@@ -1,0 +1,49 @@
+ALTER TABLE users ADD last_login2 INT DEFAULT 0 NOT NULL after last_login;
+ALTER TABLE users ADD last_ip VARCHAR(20) DEFAULT "" NOT NULL after last_login2;
+ALTER TABLE users ADD last_ip2 VARCHAR(20) DEFAULT "" NOT NULL after last_ip;
+ALTER TABLE recipient ADD route TINYINT DEFAULT 0 NOT NULL after cost;
+ALTER TABLE users CHANGE is_staff is_admin TINYINT DEFAULT 0;
+ALTER TABLE settings DROP settings_id;
+ALTER TABLE users CHANGE access access INT DEFAULT 0;
+CREATE TABLE draft
+(
+  id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  owner INT DEFAULT 0 NOT NULL,
+  user_id INT DEFAULT 0 NOT NULL,
+  sender VARCHAR(15) DEFAULT "" NOT NULL,
+  message TEXT NOT NULL,
+  recipient TEXT NOT NULL,
+  date INT DEFAULT 0 NOT NULL
+);
+ALTER TABLE users ADD previous_balance DECIMAL(10,2) DEFAULT 0 NOT NULL after balance;
+ALTER TABLE bill_history CHANGE payment_method payment_method VARCHAR(10) DEFAULT "";
+ALTER TABLE bill_history ADD transaction_id VARCHAR(15) DEFAULT "" NOT NULL after user_id;
+ALTER TABLE bill_history ADD transaction_fee DECIMAL(6,2) DEFAULT 0 NOT NULL after amount;
+CREATE UNIQUE INDEX transaction_id_index ON bill_history (owner,transaction_id);
+ALTER TABLE sent CHANGE method method VARCHAR(50);
+CREATE TABLE `cryptocurrency` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `owner` int(11) NOT NULL DEFAULT '0',
+  `user_id` int(11) NOT NULL DEFAULT '0',
+  `address` varchar(200) NOT NULL DEFAULT '',
+  `transaction_hash` varchar(500) DEFAULT NULL,
+  `price_in_usd` double NOT NULL DEFAULT '0',
+  `price_in_btc` double NOT NULL DEFAULT '0',
+  `current_balance_in_btc` double NOT NULL DEFAULT '0',
+  `paid_in_btc` double NOT NULL DEFAULT '0',
+  `date` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+CREATE TABLE `schedule` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `owner` int(11) NOT NULL DEFAULT '0',
+  `user_id` int(11) NOT NULL DEFAULT '0',
+  `type` varchar(20) NOT NULL,
+  `class` longtext,
+  `options` text NOT NULL,
+  `next_run` int(11) NOT NULL DEFAULT '0',
+  `remark` varchar(200) NOT NULL DEFAULT '',
+  `active` tinyint(4) NOT NULL DEFAULT '1',
+  `date` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;

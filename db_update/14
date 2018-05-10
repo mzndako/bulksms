@@ -1,0 +1,25 @@
+CREATE TABLE `epins_category` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `owner` int(11) NOT NULL DEFAULT '0',
+  `name` varchar(100) NOT NULL DEFAULT '',
+  `description` varchar(300) NOT NULL DEFAULT '',
+  `parent_id` int(11) DEFAULT NULL,
+  `active` tinyint(4) NOT NULL DEFAULT '1',
+  `date` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `epins` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `owner` int(11) NOT NULL DEFAULT '0',
+  `category` int(11) NOT NULL DEFAULT '0',
+  `pin` varchar(50) NOT NULL,
+  `serial` varchar(50) NOT NULL DEFAULT '',
+  `user_id` int(11) NOT NULL DEFAULT '0',
+  `date_used` int(11) NOT NULL DEFAULT '0',
+  `uploaded_by` int(11) NOT NULL DEFAULT '0',
+  `date` int(11) NOT NULL DEFAULT '0',
+  `bill_history_id` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `owner` (`owner`,`pin`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;

@@ -1,0 +1,3 @@
+ALTER TABLE bill_history ADD profit DECIMAL(10,2) DEFAULT 0 NOT NULL after amount;
+ALTER TABLE bill_history ADD commission DECIMAL(10,2) DEFAULT 0 NOT NULL after profit;
+ALTER TABLE users ADD commission DECIMAL(10,2) DEFAULT 0 NOT NULL after previous_balance;

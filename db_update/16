@@ -1,0 +1,3 @@
+ALTER TABLE bill_history ADD updated_user_id INT DEFAULT 0 NOT NULL after order_id;
+ALTER TABLE bill_history ADD updated_time INT DEFAULT 0 NOT NULL after updated_user_id;
+ALTER TABLE bill_history CHANGE order_id order_id VARCHAR(15);

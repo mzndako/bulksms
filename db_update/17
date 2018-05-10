@@ -1,0 +1,28 @@
+DROP TABLE notification;
+CREATE TABLE notification
+(
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    owner INT NOT NULL,
+    title VARCHAR(50) DEFAULT "" NOT NULL,
+    message VARCHAR(500) DEFAULT "" NOT NULL,
+    location VARCHAR(200) DEFAULT "" NOT NULL,
+    date INT DEFAULT 0 NOT NULL,
+    expires INT DEFAULT 0 NOT NULL
+);
+CREATE TABLE `notification_read` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `owner` int(11) NOT NULL,
+  `notification_id` int(11) NOT NULL DEFAULT '0',
+  `user_id` int(11) NOT NULL,
+  `view_date` int(11) NOT NULL DEFAULT '0',
+  `read_date` int(11) NOT NULL DEFAULT '0',
+  UNIQUE KEY notification_user (notification_id, user_id),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE notification ADD store TINYINT DEFAULT 1 NOT NULL after location;
+ALTER TABLE notification ADD new_user_can_see TINYINT DEFAULT 1 NOT NULL after store;
+ALTER TABLE notification ADD show_once TINYINT DEFAULT 1 NOT NULL after new_user_can_see;
+ALTER TABLE notification ADD active TINYINT DEFAULT 1 NOT NULL after expires;
+ALTER TABLE notification ADD type TINYINT DEFAULT 1 NOT NULL after location;
+ALTER TABLE notification ADD disappear_on_read TINYINT DEFAULT 1 NOT NULL after show_once;

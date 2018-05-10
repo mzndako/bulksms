@@ -1,0 +1,8 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+
+ERROR - 2017-12-08 08:06:51 --> Query error: Duplicate entry '61-1-2347034634717' for key 'sent_id' - Invalid query: INSERT INTO `recipient` (`cost`, `gid`, `msg_id`, `owner`, `phone`, `route`, `sent_id`, `status`, `user_id`) VALUES (0,4,'0','1','2347034634717','0','61',9,'1'), (0,4,'0','1','2347034634717','0','61',9,'1'), (1,4,'7bea3eb3-14a4-458c-81b6-d9a8e223fd4a','1','2347034634718','0','61',0,'1'), (0,4,'0','1','2347034634717','0','61',9,'1')
+ERROR - 2017-12-08 08:15:56 --> Severity: Parsing Error --> syntax error, unexpected 'goto' (T_GOTO) xdebug://debug-eval 1
+ERROR - 2017-12-08 08:25:54 --> Severity: Notice --> Array to string conversion C:\xampp\htdocs\bulksms\server\application\helpers\mysms_helper.php 212
+ERROR - 2017-12-08 08:50:39 --> Severity: Parsing Error --> syntax error, unexpected 'goto' (T_GOTO) xdebug://debug-eval 1
+ERROR - 2017-12-08 09:00:05 --> Query error: Duplicate entry '62-1-2347034634717' for key 'sent_id' - Invalid query: INSERT INTO `recipient` (`cost`, `gid`, `msg_id`, `owner`, `phone`, `route`, `sent_id`, `status`, `user_id`) VALUES (1.6,4,'','1','2347034634717','0','62',0,'1'), (1.6,4,'','1','2347034634717','0','62',0,'1'), (1.6,4,'','1','2347034634718','0','62',0,'1'), (1.6,4,'','1','2347034634717','0','62',0,'1'), (0,4,'','1','2348034523768','0','62',0,'1')
+ERROR - 2017-12-08 13:36:03 --> Severity: Warning --> preg_replace(): Compilation failed: range out of order in character class at offset 4 C:\xampp\htdocs\bulksms\server\application\helpers\myfunctions_helper.php 370

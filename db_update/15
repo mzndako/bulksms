@@ -1,0 +1,20 @@
+CREATE TABLE notification
+(
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    owner INT NOT NULL,
+    title VARCHAR(50) DEFAULT "" NOT NULL,
+    message VARCHAR(500) DEFAULT "" NOT NULL,
+    type VARCHAR(20) DEFAULT "" NOT NULL,
+    date INT DEFAULT 0 NOT NULL,
+    expires INT DEFAULT 0 NOT NULL
+);
+CREATE TABLE read_notification
+(
+  id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  notification_id INT NOT NULL,
+  user_id INT NOT NULL,
+  count INT DEFAULT 1 NOT NULL ,
+  date INT DEFAULT 0 NOT NULL,
+  UNIQUE KEY notification_id (notification_id, user_id)
+);
+ALTER TABLE users ADD debt DECIMAL(8,2) DEFAULT 0 NOT NULL after total_units;

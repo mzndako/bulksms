@@ -1,0 +1,1 @@
+ALTER TABLE bill_history CHANGE remark remark VARCHAR(150);

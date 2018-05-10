@@ -1,0 +1,25 @@
+ALTER TABLE users ADD username VARCHAR(100) DEFAULT "" NOT NULL after owner;
+DROP TABLE bill_history;
+CREATE TABLE `bill_history` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `owner` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL DEFAULT '0',
+  `transaction_id` varchar(15) NOT NULL DEFAULT '',
+  `bill_type` varchar(15) DEFAULT NULL,
+  `network` varchar(10) NOT NULL DEFAULT '',
+  `type` varchar(100) NOT NULL DEFAULT '',
+  `recipient` varchar(200) NOT NULL DEFAULT '',
+  `amount` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `transaction_fee` decimal(6,2) NOT NULL DEFAULT '0.00',
+  `amount_credited` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `balance` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `status` varchar(20) NOT NULL DEFAULT '',
+  `status_code` int(11) NOT NULL DEFAULT '0',
+  `remark` varchar(50) NOT NULL DEFAULT '',
+  `payment_method` varchar(10) DEFAULT '',
+  `gateway` varchar(20) NOT NULL DEFAULT '',
+  `order_id` varchar(10) NOT NULL DEFAULT '',
+  `date` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `transaction_id_index` (`owner`,`transaction_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=latin1;

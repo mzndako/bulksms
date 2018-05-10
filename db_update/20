@@ -1,0 +1,1 @@
+ALTER TABLE epins_category ADD amount DECIMAL(8,2) DEFAULT 0 NULL after parent_id;

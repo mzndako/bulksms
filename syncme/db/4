@@ -1,0 +1,1 @@
+ALTER TABLE recipient ADD gid VARCHAR(20) DEFAULT "" NOT NULL after route;

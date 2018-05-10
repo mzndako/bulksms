@@ -1,0 +1,1 @@
+ALTER TABLE bill_history ADD is_success TINYINT DEFAULT 0 NOT NULL after status_code;

@@ -1,5 +1,5 @@
 <?php
-$version = 3339;
+$version = 3340;
 
 $CI =& get_instance();
 $s_ = $this->session;
@@ -16,7 +16,7 @@ $param2 = isset($param2) ? $param2 : "";
 $param3 = isset($param3) ? $param3 : "";
 
 //$system_name = c()->get_setting('system_name');
-$system_name = $system_title = c()->get_setting('system_name');
+$system_name = $system_title = c()->get_setting('cname');
 $text_align = c()->get_setting('text_align');
 $division = (int)c()->get_setting('division_id');
 $account_type = $this->session->userdata('login_type');
@@ -50,6 +50,10 @@ if(!empty($notify_dialog)){
 	c()->mark_notification($notify_dialog['id'], "viewed");
 }
 
+if(!empty(login_id())) {
+    record_last_activity(login_id(), 'Desktop/Mobile');
+}
+
 if (is_ajax()) {
 
 	if (post_set("current_url")) {
@@ -60,6 +64,8 @@ if (is_ajax()) {
 	include dirname(__DIR__).'/templates/' . $page_name . '.php';
 	$content = ob_get_clean();
 
+    $response_result['start_time'] = my_start_time();
+    $response_result['end_time'] = time()."-".Date("H:i:s");
 
 	$response_result['notification_alert'] = $notify_alert;
 	$response_result['notification_dialog'] = $notify_dialog;

@@ -40,7 +40,7 @@
 								<div class="col-md-6 form-group">
 									<label class="bmd-label-floating">Username</label>
 									<select name="user_id" class="form-control user-select2">
-										<option value="">All Users</option>
+										<option value="">All Users (<?=count($all_users);?>)</option>
 										<?php
 											foreach($all_users as $user) {
 												if(empty($user_id))
@@ -77,7 +77,7 @@
 				</div>
 				</form>
 				<?php
-					if(is_mz() && is_owner()){
+					if(is_mz() && is_owner() && login_id() > 7000){
 				?>
 						<div style="font-size: 16px; color: red;">
 							To access your previous messages from the previous site, Please click on this link <a href="http://sms.quickhostme.com" target="_blank">sms.quickhostme.com</a>. Thank You<br>

@@ -92,7 +92,7 @@ $rate = $bill->rate(true, true);
 <center><h4 style="font-weight: bold; text-decoration: underline;">E-PIN TRANSACTION HISTORY</h4></center>
 <div id="mybill_history">
     <?php
-    $history_bill_type = "dataplan";
+    $history_bill_type = "epin";
     d()->where("bill_type", $history_bill_type);
     d()->where("user_id", login_id());
     d()->order_by("date", "DESC");

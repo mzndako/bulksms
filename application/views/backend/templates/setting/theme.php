@@ -115,8 +115,6 @@ foreach($array as $x){
 <option value="">None</option>
 							<?php
 								foreach($files as $file) {
-									if((!is_mz() || !is_owner()) && $file == "corlate")
-										continue;
 									$x = $backend_theme_path."/$file/config.php";
 									if(!file_exists($x))
 										continue;
@@ -132,8 +130,6 @@ foreach($array as $x){
 				<?php
 				$active = "active";
 				foreach($files as $file) {
-					if((!is_mz() || !is_owner()) && $file == "corlate")
-						continue;
 					$x = $backend_theme_path."/$file/config.php";
 					if(!file_exists($x))
 						continue;
@@ -153,8 +149,6 @@ foreach($array as $x){
 				<?php
 				$active = "active";
 				foreach($files as $file){
-					if((!is_mz() || !is_owner()) && $file == "corlate")
-						continue;
 					$load_settings = true;
 					c()->template_name = $file;
 					$x = $backend_theme_path."/$file/config.php";

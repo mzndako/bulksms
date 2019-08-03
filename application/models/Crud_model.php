@@ -9,7 +9,6 @@ if (!defined('BASEPATH'))
  */
 class Crud_model extends CI_Model
 {
-
 	function __construct()
 	{
 		parent::__construct();
@@ -2560,10 +2559,11 @@ $required >";
 		return $array;
 	}
 
-	function process_notification($message, $user_id = "", $owner = null)
+	function process_notification($message, $user_id = "", $owner = null, &$my_array = Array())
 	{
 		$owner = !empty($owner) ? $owner : owner;
 		$user_id = !empty($user_id) ? $user_id : login_id();
+
 
 		$array = user_data(null,$user_id, array());
 		if (!empty($array)) {
@@ -2572,8 +2572,10 @@ $required >";
 					continue;
 				if($col == "username"){
 					$message = str_ireplace("@@{$col}@@", $this->get_full_name($user_id), $message);
+					$my_array[strtolower($col)] = $this->get_full_name($user_id);
 				}else{
 					$message = str_ireplace("@@{$col}@@", $value, $message);
+                    $my_array[strtolower($col)] = $value;
 				}
 			}
 		}
@@ -2598,6 +2600,7 @@ $required >";
 				}
 
 				$message = str_ireplace("@@{$value}@@", $rep, $message);
+                $my_array[strtolower($value)] = $rep;
 
 			}
 
@@ -2606,7 +2609,9 @@ $required >";
 		$others = array("site_name","website","cemail","cphone","caddress");
 
 		foreach($others as $value){
-			$message = str_replace("@@{$value}@@", get_setting($value,"",$owner), $message);
+		    $response = get_setting($value,"",$owner);
+			$message = str_replace("@@{$value}@@",$response , $message);
+            $my_array[strtolower($value)] = $response;
 		}
 
 		return $message;
@@ -2620,6 +2625,7 @@ $required >";
 	function send_mail_notification($notification_type, $to, $replace=array(), $user_id=null,$owner=null){
 		return $this->send_notification($notification_type."_mail",$to,true,$replace,false,$user_id,$owner);
 	}
+
 	function send_notification($notification, $to, $for_mail_or_route = true, $replace = array(), $charge=false, $user_id = "", $owner = ""){
 		if(empty($to)){
 			return false;
@@ -2633,13 +2639,28 @@ $required >";
 		if(empty(setting()->get_notification("{$notification}_enabled")))
 			return false;
 
+
+
 		if(!empty($message) && !empty($title)){
+            $smarty = new StringTemplating();
+
 			foreach($replace as $key => $value){
 				$message = str_ireplace("@@{$key}@@", $value, $message);
 				$title = str_ireplace("@@{$key}@@", $value, $title);
+                $smarty->assign(strtolower($key), $value);
 			}
-			$message = c()->process_notification($message, $user_id, $owner);
+			$my_array = [];
+			$message = c()->process_notification($message, $user_id, $owner, $my_array);
 			$title = c()->process_notification($title, $user_id, $owner);
+
+
+            foreach($my_array as $key => $value){
+                $smarty->assign($key, $value);
+            }
+
+            $message = $smarty->format($message);
+            $title = $smarty->format($title);
+
 			if($for_mail_or_route === true){
 				if(!$this->is_email($to)){
 					return false;

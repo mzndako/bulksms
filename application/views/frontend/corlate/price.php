@@ -4,6 +4,9 @@
 
     $bill = new mybill();
     $bill_rate = $bill->rate(true, true);
+    if(empty($bill_rate)){
+        $bill_rate = array("airtime"=>array(),"dataplan"=>array(),"bill"=>array());
+    }
 $x = 0;
 ?>
 <section class="pricing-page">

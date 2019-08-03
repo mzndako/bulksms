@@ -22,6 +22,7 @@ class sms{
 	private $temp_numbers = array();
 	public $testing = false; //VERY IMPORTANT
 	public $reset = false;
+	public $encodeOnSerialize = false;
 	public $trim_sender_id = true;
 	private $reseller_cost = 0;
 	public $default_cost = 0;
@@ -30,6 +31,7 @@ class sms{
 	function __construct($owner = ""){
 		$this->user_id = login_id();
 		$this->owner = $owner === ""?owner:$owner;
+        mb_internal_encoding('utf-8');
 		$x = 10;
 	}
 
@@ -457,15 +459,25 @@ class sms{
 		if($this->is_spam($sender, $message)){
 			$message = "Error: You were trying to send SPAM sms, your account has been temporary disabled. Contact Support";
 			d()->where("id", $this->user_id);
-			d()->update("users", array("disabled"=>time(),"disabled_text"=>$message));
-			return $this->failed($message);
+      d()->update("users", array("disabled"=>time(),"disabled_text"=>$message));
+      $mail = "Email: ". user_data("email", $this->user_id, "", false, $this->owner). "<br>Sender: " . $this->sender. "<br>MESSAGE: ". $this->message;
+
+      send_mail($mail, "User Sending Spam Message", "quicksmsone@gmail.com");
+
+      return $this->failed($message);
 		}
 
 		return array();
 	}
 
 	function is_spam($sender, $message){
-		if(strpos($message, "call customer") !== false)
+    $sender = strtolower($sender);
+    $message = strtolower($message);
+
+    $sender = str_replace(" ", "", $sender);
+    $message = str_replace(" ", "", $message);
+
+		if(strpos($message, "callcustomer") !== false)
 			return true;
 
 		if(strpos($message, "customer") !== false && (strpos($message, "atm") !== false || strpos($message, "atm") !== false))
@@ -475,7 +487,19 @@ class sms{
 			return true;
 
 		if(strpos($sender, "bank") !== false && strpos($message, "atm") !== false)
-			return true;
+      return true;
+    
+    if(strpos($sender, "mtn") !== false)
+      return true; 
+
+    if(strpos($message, "08108209591") !== false)
+			return true;  
+
+    if(strpos($message, "mtn") !== false && (strpos($message, "congrats") !== false || strpos($message, "win") !== false || strpos($message, "won") !== false))
+			return true;  
+
+    if(strpos($message, "promo") !== false)
+      return true;
 
 		return false;
 	}
@@ -543,7 +567,7 @@ class sms{
 				$d_cost = $this->cost(0, $temp, $null, $sending_route == 0?"default_rate":"default_dnd_rate");
 				$bal = $this->user_balance();
 
-				if($bal < $cost){
+				if($bal < $cost && $this->charge){
 					$result[] = $this->failed($this->is_sender?"1111":"2222");
 				}else{
 					$this->deduct_unit($cost, $sending_route, $d_cost);
@@ -578,7 +602,7 @@ class sms{
 					$result[] = $response;
 				}
 			}else{
-				$join = array_chunk($numbers, 100);
+				$join = array_chunk($numbers, 35);
 				foreach ($join as $k => $numbers) {
 					$rate = $dr;
 
@@ -618,7 +642,7 @@ class sms{
 					$null = array();
 					$d_cost = $this->cost(0, $temp, $null, $sending_route == 0?"cost_sms_rate":"cost_dnd_rate");
 					$bal = $this->user_balance();
-					if ($bal < $cost) {
+					if ($bal < $cost && $this->charge) {
 						if($this->switch_balance_on_insufficient){
 							$this->balance_source = $this->balance_source == "balance"?"previous_balance":"balance";
 							$this->switch_balance_on_insufficient = false;
@@ -684,6 +708,7 @@ class sms{
 
 								curl_setopt($ch, CURLOPT_TIMEOUT, 15);
 								curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
+
 								$response = curl_exec($ch);
 								if (curl_error($ch)) {
 									$response = curl_error($ch);
@@ -695,6 +720,11 @@ class sms{
 								curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 								curl_setopt($ch, CURLOPT_FAILONERROR, true);
 								curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+								//SET PROXY SERVER
+//                                curl_setopt($ch, CURLOPT_PROXYPORT, "3128");
+//                                curl_setopt($ch, CURLOPT_PROXYTYPE, 'HTTP');
+//                                curl_setopt($ch, CURLOPT_PROXY, "94.16.117.29");
 								$response = curl_exec($ch);
 								//TESTING PURPOSE
 //								if($test){
@@ -702,7 +732,8 @@ class sms{
 //								}else{
 //									$response = "1701|2349038781253,1032|2349038781252";
 //								}
-//								$test = true;
+//								$test =
+
 								if (curl_error($ch)) {
 									$response = curl_error($ch);
 								}

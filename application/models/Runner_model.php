@@ -45,7 +45,7 @@ class Runner_model extends CI_Model {
 
     private function process_sms($row){
         $error = "";
-        $sms = unserialize($row['class']);
+        $sms = mb_unserialize($row['class']);
         $sms->method = $sms->method. " (schedule)";
         $source = "previous_wallet";
 

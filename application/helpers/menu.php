@@ -36,9 +36,10 @@ $menu = <<<EOF
 22,E-pins,17,,,fa fa-map-pin,1,0
 0,View E-pins,22,view_epins,epins/view,fa fa-map-pin,1,0
 0,Manage E-pins,22,manage_epins,epins/manage,fa fa-map-pin,1,0
-0,Delete Epins Category,17,delete_epin_category, ,fa fa-map-pin,0,0
-0,Add/Upload Epins,17,upload_epins, ,fa fa-plus,0,0
-0,Update/Delete Epins,17,update_epins, ,fa fa-plus,0,0
+0,Delete Epins Category,22,delete_epin_category, ,fa fa-map-pin,0,0
+0,Add/Upload Epins,22,upload_epins, ,fa fa-plus,0,0
+0,Update/Delete Epins,22,update_epins, ,fa fa-plus,0,0
+0,Manage VIP users,17,manage_vip,users/vip,fa fa-user-secret,1,0
 0,Payment History,17,payment_history,bill/history/0/fund_wallet,fa fa-history,1,0
 0,Notifications,17,manage_notifications,admin/notifications,fa fa-bell-o,1,0
 0,Alerts,17,manage_alerts,admin/alerts,fa fa-exclamation-circle,1,0

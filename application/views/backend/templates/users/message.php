@@ -102,7 +102,7 @@
 
 <br>
 			<?php
-				if(true || !empty($search)) {
+				if(true || !empty($search) && count($all_users) <= 10) {
 					?>
 					<br>
 					<table data-server-side="<?=history_link();?>" data-totalrecords="<?= $all_users_count;?>" class="table table-bordered table-striped datatable">
@@ -134,7 +134,11 @@
 //					$title = "<div align='left'>Name: $row[fname] $row[surname]<br>Sex: $row[sex]<br>Balance: ".format_amount($row['balance'])."<br>Email: $row[email]</div>";
 							?>
 							<tr>
-								<td><?= $count++; ?></td>
+								<td>
+                                <label class="radio radio-inline">
+                                    <input type="checkbox" name="user_id[]" value="<?=$row['id'];?>" /> <?= $count++; ?>
+                                </label>
+                                </td>
 								<td><?= $row['fname'] . " " . $row['surname']; ?></td>
 								<td><?= c()->get_full_name($row); ?></td>
 								<td><?= $row['phone']; ?></td>
@@ -260,6 +264,28 @@
 				}
 			?>
 </div>
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-description">
+                MESSAGE
+            </div>
+            <div class="form-group">
+                 <label class="radio checkbox-inline">
+                     <input type="radio" onchange="toggle_message()" name="type" value="sms" /> SMS
+                 </label>
+                 <label class="radio checkbox-inline">
+                     <input type="radio" onchange="toggle_message()" name="type" value="email" /> EMAIL
+                 </label>
+            </div>
+            <div class="form-group">
+                <textarea class="form-control" name="message"></textarea>
+            </div>
+            <div class="form-group" id="message_user">
+                <textarea  class="form-control" name="message"></textarea>
+            </div>
+
+        </div>
+    </div>
 	</div>
 
 <script>

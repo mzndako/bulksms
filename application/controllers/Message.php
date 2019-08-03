@@ -341,8 +341,8 @@ class Message extends CI_Controller
     function draft($param1 = "", $param2 = ""){
         rAccess("draft");
 
-        $date1 = strtotime(date("d-m-Y")." 00:00:01");
-        $date2 = strtotime(date("d-m-Y")." 23:59:59");
+        $date1 = "";
+        $date2 = "";
         $search = "";
         $user_id = is_admin()?$param1:"";
 
@@ -371,7 +371,7 @@ class Message extends CI_Controller
             d()->where("date>=", $date1);
             d()->where("date<=", $date2);
         }else{
-            d()->limit(50);
+            d()->limit(200);
         }
         $history_again = false;
         history_again:

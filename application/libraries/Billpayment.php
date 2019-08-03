@@ -16,10 +16,11 @@ class Billpayment
 
 	function bill_gateway($id = null){
 		$bill_gateway = array("1"=>"Email", "2"=>"Club Konnect");
-		if(is_mz()){
-			$bill_gateway[3] = "Topup Africa";
-		}
-		return $id === null?$bill_gateway:getIndex($bill_gateway, $id);
+        $bill_gateway[] = "Africas Talking";
+        if(is_mz()){
+            $bill_gateway[] = "Topup Africa";
+        }
+        return $id === null?$bill_gateway:getIndex($bill_gateway, $id);
 	}
 
 	private $gateway_id = 0;

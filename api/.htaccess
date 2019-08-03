@@ -6,10 +6,10 @@
 
 #RewriteCond %{REQUEST_FILENAME} !-f
 #RewriteRule ^[^\.]+\.php$ /example.php [L,NC]
-RewriteEngine On
+#RewriteEngine On
 # RewriteBase /myschool  
 
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteCond $1 !^(index\.php|images|robots\.txt|css|docs|js|system)
-  RewriteRule ^(.*)$ ../index.php?api/previous/$1 [L]
+ # RewriteCond %{REQUEST_FILENAME} !-f
+  #RewriteCond %{REQUEST_FILENAME} !-d
+  #RewriteCond $1 !^(index\.php|images|robots\.txt|css|docs|js|system)
+  #RewriteRule ^(.*)$ ../index.php?api/previous/$1 [L]

@@ -2,6 +2,7 @@
 this()->load->library("Billpayment");
     $bill = new mybill();
     $rate = $bill->rate(true);
+    $col = "col-md-4 col-sm-6";
 ?>
 <div class="col-md-12">
 
@@ -24,7 +25,7 @@ this()->load->library("Billpayment");
         <?php
         if(is_mz() && is_owner()) {
             ?>
-            <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="<?=$col;?>">
                 <div class="info-box" >
                     <span class="info-box-icon"><i class="template-color fa fa-question"></i></span>
 
@@ -45,7 +46,7 @@ this()->load->library("Billpayment");
         }
         ?>
 
-        <div class="col-md-4 col-sm-6 col-xs-12">
+        <div class="<?=$col;?>">
             <div class="info-box"    onclick="loadPage('<?=url('wallet/fund');?>')">
                 <span class="info-box-icon"><i class="template-color fa fa-money"></i></span>
 
@@ -64,17 +65,40 @@ this()->load->library("Billpayment");
         <?php
             if(is_hillary()) {
                 ?>
-                <div class="col-md-4 col-sm-6 col-xs-12">
-                    <div class="info-box" onclick="loadPage('<?= url('/fund'); ?>')">
+                <div class="<?=$col;?>">
+                    <div class="info-box">
                         <span class="info-box-icon"><i class="template-color fa fa-money"></i></span>
 
                         <div class="info-box-content">
                             <span class="info-box-text">Become a VIP Member</span>
-                    <span style="line-height: 1" class="info-box-number">
+                    <span style="line-height: 1.2; font-size: 13px;" class="info-box-number">
+                        <?php
+                            $active_phase = user_data("vip_package");
+                            $phase_expires = floor((user_data("vip_expires") - time())/(3600*24));
+                            $url = url('admin/dashboard/subscribe_phase');
+                            $phase1_amount = get_setting("phase1_amount");
+                            $phase1_period = get_setting("phase1_period");
+                            $phase1 =  <<<eof
+$phase1_amount for $phase1_period Months <a href="$url/1" onclick="return confirm_dialog(this,'Activate Phase 1 ($phase1_amount) for $phase1_period Months', '#my_content')">Subscribe</a>
+eof;
+                            if($active_phase == 1){
+                                $phase1 = "Expires in $phase_expires Days";
+                            }
 
-                        Phase 1 = N1,000 for 6 Months<br>
-                        Phase 2 = N1,500 for 1 Year<br>
-                            <a ajax="true" href="<?= url('wallet/fund'); ?>"><b>Advantages</b></a>
+                            $phase2_amount = get_setting("phase2_amount");
+                            $phase2_period = get_setting("phase2_period");
+                            $phase2 =  <<<eof
+$phase2_amount for $phase2_period Months <a href="$url/2" onclick="return confirm_dialog(this,'Activate Phase 2 ($phase2_amount) for $phase2_period Months', '#my_content')">Subscribe</a>
+eof;
+                            if($active_phase == 2){
+                                $phase2 = "Expires in $phase_expires Days";
+                            }
+
+
+                        ?>
+                        Phase 1 = <?=$phase1;?><br>
+                        Phase 2 = <?=$phase2;?><br>
+                            <a href="javascript:void(0)" onclick='my_alert("<?= str_replace("\n","<br>",get_setting('phase_advantages')); ?>")'><b>Advantages</b></a>
                         </div>
                     </div>
                 </div>
@@ -84,7 +108,7 @@ this()->load->library("Billpayment");
         <?php
             if(is_reseller() && is_admin()) {
                 ?>
-                <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="<?=$col;?>">
                     <div class="info-box" onclick="loadPage('<?= url('wallet/fund'); ?>')">
                         <span class="info-box-icon "><i
                             class="template-color fa fa-money"></i></span>
@@ -110,7 +134,7 @@ this()->load->library("Billpayment");
 
             if(is_admin()) {
                 ?>
-                <div  class="col-md-4 col-sm-6 col-xs-12">
+                <div  class="<?=$col;?>">
                     <div class="info-box" onclick="loadPage('<?= url('wallet/fund'); ?>')">
                         <span class="info-box-icon "><i
                             class="template-color fa fa-money"></i></span>
@@ -137,7 +161,7 @@ this()->load->library("Billpayment");
         $pv = (Float) user_data("previous_balance");
         if(!empty($pv) && $pv != -1) {
             ?>
-            <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="<?=$col;?>">
                 <div class="info-box">
                     <span class="info-box-icon "><i class="template-color fa fa-university"></i></span>
 
@@ -155,7 +179,7 @@ this()->load->library("Billpayment");
 
 
 
-        <div class="col-md-4 col-sm-6 col-xs-12">
+        <div class="<?=$col;?>">
             <div class="info-box" onclick="loadPage('<?=url('message/bulksms');?>')">
                 <span class="info-box-icon "><i class="template-color fa fa-envelope-o"></i></span>
 
@@ -170,7 +194,7 @@ this()->load->library("Billpayment");
             </div>
         </div>
 
-        <div class="col-md-4 col-sm-6 col-xs-12">
+        <div class="<?=$col;?>">
             <div class="info-box" onclick="loadPage('<?=url('bill/buy_airtime');?>')">
                 <span class="info-box-icon "template-color fa "><i class="template-color fa fa-credit-card"></i></span>
 
@@ -184,7 +208,7 @@ this()->load->library("Billpayment");
             </div>
         </div>
 
-        <div class="col-md-4 col-sm-6 col-xs-12">
+        <div class="<?=$col;?>">
             <div class="info-box" onclick="loadPage('<?=url('bill/buy_dataplan');?>')">
                 <span class="info-box-icon"><i class="template-color fa fa-cloud-download"></i></span>
 
@@ -198,7 +222,7 @@ this()->load->library("Billpayment");
             </div>
         </div>
 
-        <div class="col-md-4 col-sm-6 col-xs-12">
+        <div class="<?=$col;?>">
             <div class="info-box" onclick="loadPage('<?=url('bill/pay');?>')">
                 <span class="info-box-icon"><i class="template-color fa fa-paypal"></i></span>
 
@@ -212,7 +236,7 @@ this()->load->library("Billpayment");
             </div>
         </div>
 
-        <div class="col-md-4 col-sm-6 col-xs-12">
+        <div class="<?=$col;?>">
             <div class="info-box">
                 <span class="info-box-icon "><i class="template-color fa fa-globe"></i></span>
 
@@ -229,7 +253,7 @@ this()->load->library("Billpayment");
             if(is_admin()) {
                 ?>
 
-                <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="<?=$col;?>">
                     <div class="info-box">
                         <span class="info-box-icon "><i class="template-color fa fa-user"></i></span>
 
@@ -242,7 +266,7 @@ this()->load->library("Billpayment");
                     </div>
                 </div>
 
-                <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="<?=$col;?>">
                     <div class="info-box">
                         <span class="info-box-icon "><i class="template-color fa fa-money"></i></span>
 
@@ -260,7 +284,7 @@ this()->load->library("Billpayment");
                 </div>
 
 
-                <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="<?=$col;?>">
                     <div class="info-box">
                         <span class="info-box-icon "><i class="template-color fa fa-money"></i></span>
 
@@ -280,7 +304,7 @@ this()->load->library("Billpayment");
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="<?=$col;?>">
                     <div class="info-box">
                         <span class="info-box-icon "><i class="template-color fa fa-money"></i></span>
 
@@ -299,7 +323,7 @@ this()->load->library("Billpayment");
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="<?=$col;?>">
                     <div class="info-box">
                         <span class="info-box-icon "><i class="template-color fa fa-money"></i></span>
 

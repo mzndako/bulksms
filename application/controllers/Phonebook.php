@@ -44,7 +44,9 @@ class Phonebook extends CI_Controller
                 d()->group_end();
             }
 
-            if(!empty($user_id)){
+            if(!is_admin()){
+                d()->where("user_id", login_id());
+            }else if(!empty($user_id)){
                 d()->where("user_id", $user_id);
             }
 
@@ -52,6 +54,9 @@ class Phonebook extends CI_Controller
             d()->order_by("name", "ASC");
             $phonebook = c()->get("phonebook")->result_array();
         }else{
+            if(!is_admin())
+                d()->where("user_id", login_id());
+
             d()->limit(200);
             d()->order_by("name", "ASC");
             $phonebook = c()->get("phonebook")->result_array();

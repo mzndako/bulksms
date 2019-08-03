@@ -27,8 +27,7 @@ print $response;
 
 if(strtolower(trim($username)) == "administrator"){
 	print "\n";
-	print "DIRECT ".getBalance();
-	print "\nDND = ".balance_route_dnd();
+	print "WALLET: ".getBalance();
 
 }
 

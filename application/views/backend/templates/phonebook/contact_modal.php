@@ -19,8 +19,8 @@ rAccess("manage_phonebook");
                     $phonebook = c()->get("phonebook")->result_array();
                     foreach($phonebook as $row) {
                         ?>
-                        <div class="checkbox checkbox">
-                            <label>
+                        <div class="checkbox checkbox" style="overflow: hidden; white-space: nowrap">
+                            <label >
                                 <input type="checkbox"/> <?=$row['name'].": ".$row['numbers'];?>
                             </label>
                         </div>

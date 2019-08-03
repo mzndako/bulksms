@@ -113,6 +113,7 @@
                                             </a>
                                         </li>
 
+
                                         <li class="divider"></li>
 
                                         <li>
@@ -135,14 +136,20 @@
                                     </a>
                                 </li>
 
-                                <li class="divider"></li>
-                                <li>
-                                    <a ajax="true"
-                                       href="<?php echo url('epins/view/' . $row['id']); ?>" >
-                                        <i class="fa fa-eye" aria-hidden="true"></i>
-      View Pins
-                                    </a>
-                                </li>
+                                <?php
+                                    if(!empty($sub['id'])) {
+                                        ?>
+                                        <li class="divider"></li>
+                                        <li>
+                                            <a ajax="true"
+                                               href="<?php echo url('epins/view/' . $sub['id']); ?>">
+                                                <i class="fa fa-eye" aria-hidden="true"></i>
+                                                View Pins
+                                            </a>
+                                        </li>
+                                        <?php
+                                    }
+                                ?>
 
                                 <li class="divider"></li>
 

@@ -1,0 +1,3 @@
+ALTER TABLE users ADD vip_package TINYINT DEFAULT 0 NULL after last_ip2;
+ALTER TABLE users ADD vip_expires INT DEFAULT 0 NULL after vip_package;
+ALTER TABLE users ADD bill_rate INT DEFAULT 0 NULL after dnd_rate;

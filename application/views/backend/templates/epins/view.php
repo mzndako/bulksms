@@ -42,6 +42,7 @@
         <select name="user_id" class="form-control user-select2">
             <option value="">Any User (<?=count($all_users);?>)</option>
             <?php
+            $all_users = get_arrange_id($all_users, "id");
             foreach($all_users as $user) {
                 if(empty($user_id))
                     break;
@@ -65,17 +66,19 @@
             d()->group_by("uploaded_by");
             $users = c()->get("epins")->result_array();
             foreach($users as $user) {
-                if(empty($user))
+                if(empty($user['id']))
+                    continue;
+                $name = c()->get_full_name(getIndex($all_users, $user['id']));
+                if(empty($name))
                     continue;
                     ?>
                     <option <?=p_selected($uploaded_by, $user['id']);?>
-                            value="<?= $user['id']; ?>"><?= c()->get_full_name($user); ?></option>
+                            value="<?= $user['id']; ?>"><?= $name; ?></option>
                     <?php
 
             }
             ?>
         </select>
-
     </div>
     </div>
 <div class="row">
@@ -144,7 +147,8 @@
         <tbody>
         <?php
         $all_categories = get_arrange_id("epins_category", "id");
-        $count = g("start") + 1;;
+        $count = g("start") + 1;
+
         foreach($epins as $row):
             $parent_id = getIndexOf($all_categories, $row['category'], "parent_id");
             $cname = getIndexOf($all_categories, $parent_id, "name");
@@ -168,7 +172,7 @@
                             print "***********".substr($row['pin'], $len - $show);
                     }
                     ;?></td>
-                <td><?php echo empty($row['user_id'])?"--":c()->get_full_name(getIndex($users, $row['user_id']));?></td>
+                <td><?php echo empty($row['user_id'])?"--":c()->get_full_name(getIndex($all_users, $row['user_id']));?></td>
 
                 <td><?php
                     echo empty($row['date_used'])?"--":convert_to_datetime($row['date_used'])

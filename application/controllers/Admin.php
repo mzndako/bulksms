@@ -28,54 +28,74 @@ class Admin extends CI_Controller
 		$this->output->set_header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
 		$this->output->set_header('Pragma: no-cache');
 
-		if (hAccess('login')) {
-//			$this->session->set_flashdata('flash_message', "Please login first");
-//			redirect(base_url() . "?login", 'refresh');
-		}
 
-//		$sms = new sms();
-//		$x = "?????"; $a ="a@#^$#*&^*@)!(*#&%*&^$(~`/*-+";
-//
-//		$x = base64_decode("2YXYsdit2KjYpw==");
-////		$x = $sms->utf8_clean( $a." ".$x);
-//		print mb_strlen($x, 'UTF-8');
-//		print $x;
-//		print "<br>";
-//
-//		$conv1 = $sms->str2unicode2hex($x);
-//		print strtoupper($conv1);
-//		print " - ";
-////		print $sms->sms_dec($conv1);
-//		print $sms->sms_dec($conv1);
-//		print "<br>";
-//		$conv2 = $sms->str2unicode($x);
-//		print strlen($conv2);
-//		print " - ";
-//		print $conv2;
-//		print " - ";
-//		print $sms->sms_dec($conv2);
-//		print " - ";
-//		print strlen($sms->sms_dec($conv2));
-////		print $conv2);
-//		die();
 
 	}
 
 	public function index()
 	{
-		if(is_login())
-			redirect(url("admin/dashboard"), 'refresh');
-		else
+		if(is_login()) {
+            redirect(url("admin/dashboard"), 'refresh');
+        }else
 			redirect(url("login"), "refresh");
+//die();
+
 	}
 
 	/***ADMIN DASHBOARD***/
-	function dashboard()
+	function dashboard($param1 = "", $param2 = "")
 	{
 		if(!is_login())
 			redirect(url("login"), "refresh");
 
-		$page_data['page_name'] = 'dashboard';
+        if($param1 == "subscribe_phase"){
+            $phase = "phase$param2";
+            $amount = parse_amount(get_setting("{$phase}_amount"));
+            $duration = parse_amount(get_setting("{$phase}_period"));
+
+            $bal = user_balance();
+
+            if(empty($amount)){
+                ajaxFormDie("Invalid Amount set for this phase");
+            }
+
+            if($amount > $bal){
+                ajaxFormDie("Insufficient Balance");
+            }
+
+            update_user_balance($amount, false);
+
+            $data['amount'] = $amount;
+            $data['bill_type'] = 'subscription';
+            $data['type'] = 'Phase 1 Subscription';
+            $data['recipient'] = $duration.' Months';
+            insert_history($data);
+
+            $sms_rate = get_setting("{$phase}_cost_sms_rate");
+            $dnd_rate = get_setting("{$phase}_cost_dnd_rate");
+            $bill_rate = get_setting("{$phase}_cost_bill_rate");
+
+            $user['vip_package'] = $param2;
+            $user['vip_expires'] = time() + ($duration * 30 * 3600 * 24);
+
+            if(!empty($sms_rate)){
+                $user['rate'] = $sms_rate;
+            }
+
+            if(!empty($dnd_rate)){
+                $user['dnd_rate'] = $dnd_rate;
+            }
+
+            if(!empty($bill_rate)){
+                $user['bill'] = $dnd_rate;
+            }
+
+            d()->where("id", login_id());
+            c()->update("users", $user  );
+//            ajaxFormDie("Successfully", "success");
+        }
+
+        $page_data['page_name'] = 'dashboard';
 		$page_data['page_title'] = get_phrase('dashboard');
 
 		$this->load->view('backend/index', $page_data);

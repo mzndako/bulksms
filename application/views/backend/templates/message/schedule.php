@@ -37,16 +37,23 @@
 							?>
 							<div class="col-md-6 form-group">
 								<label class="bmd-label-floating">Username</label>
-								<select name="user_id" class="form-control">
-									<option value="">All Users</option>
-									<?php
-									foreach($all_users as $user) {
-										?>
-										<option <?=p_selected($user['id'] == $user_id);?> value="<?=$user['id'];?>"><?=c()->get_full_name($user);?></option>
-										<?php
-									}
-									?>
-								</select>
+                                <select name="user_id" class="form-control user-select2">
+                                    <option value="">All Users</option>
+                                    <?php
+                                    foreach($all_users as $user) {
+                                        if(empty($user_id))
+                                            break;
+
+                                        if($user['id'] == $user_id) {
+                                            ?>
+                                            <option <?= p_selected($user['id'] == $user_id); ?>
+                                                    value="<?= $user['id']; ?>"><?= c()->get_full_name($user); ?></option>
+                                            <?php
+                                            break;
+                                        }
+                                    }
+                                    ?>
+                                </select>
 
 							</div>
 							<?php
@@ -97,10 +104,11 @@
 
 							$count = 1;
 							foreach ($schedule as $row):
-								$sms =  @unserialize($row['class']);
+								$sms =  @mb_unserialize($row['class']);
 
-								if(empty($sms))
-									continue;
+								if(empty($sms)) {
+                                    continue;
+                                }
 								?>
 								<tr>
 									<td><?= $count++; ?></td>

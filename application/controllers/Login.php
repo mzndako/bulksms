@@ -83,7 +83,7 @@ class Login extends CI_Controller {
                     $id = $user->get_user_id();
                     $code = create_token($user->get_user_id(), "password_reset", 5);
                     $code = strtoupper($code);
-                    $link = "http://".domain_name()."/login/reset_password/$id/$code";
+                    $link = "https://".domain_name()."/login/reset_password/$id/$code";
                     $mail = c()->send_mail_notification("password_reset", $user->get("email"), array("code"=>$code, "link"=>$link), $id);
                     $sms = c()->send_sms_notification("password_reset", $user->get("phone") , array("code"=>$code, "link"=>$link), $id);
                     if($mail){

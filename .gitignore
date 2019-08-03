@@ -6,3 +6,5 @@ node_modules/
 .idea/workspace.xml
 idea
 push.bat
+ci_sessions/
+applications/logs/

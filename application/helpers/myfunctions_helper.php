@@ -10,32 +10,38 @@ date_default_timezone_set('Africa/Lagos');
 
 $server_array = $_SERVER;
 
-include_once(__DIR__.'/shared/class.lib.php');
-include_once(__DIR__.'/app/class.app.php');
-$application = new license_application('application/license.dat', false, true, false, true);
-$application->set_server_vars($server_array);
-$results 	= $application->validate();
-$application->make_secure();
 
 
-switch($results['RESULT'])
-{
-	case 'OK' :
-		break;
-	case 'EXPIRED' :
-		$x = "<h2>Your licence has expired (".$results['DATE']['HUMAN']['START'] ." - ". $results['DATE']['HUMAN']['END'].")</h2> Please contact your supplier";
-		print $x;
-		die();
-	default :
-		print "<h2>Invalid Licence File. Please contact your supplier</h2>";
-		die();
-		break;
-}
+//include_once(__DIR__.'/shared/class.lib.php');
+//include_once(__DIR__.'/app/class.app.php');
+//$application = new license_application('application/license.dat', false, true, false, true);
+//$application->set_server_vars($server_array);
+//$results 	= $application->validate();
+//$application->make_secure();
+
+//
+//switch($results['RESULT'])
+//{
+//	case 'OK' :
+//		break;
+//	case 'EXPIRED' :
+//		$x = "<h2>Your licence has expired (".$results['DATE']['HUMAN']['START'] ." - ". $results['DATE']['HUMAN']['END'].")</h2> Please contact your supplier";
+//		print $x;
+//		die();
+//	default :
+//		print "<h2>Invalid Licence File. Please contact your supplier</h2>";
+//		die();
+//		break;
+//}
 
 function is_server(){
 	return defined("IS_SERVER");
 }
 
+function mb_unserialize($string) {
+    $ret = unserialize($string);
+    return $ret;
+}
 
 
 if ( ! function_exists('get_setting'))
@@ -820,6 +826,7 @@ function insert_history($data_=array()){
 	$data['updated_time'] = $data['date'];
 	$data['updated_user_id'] = login_id();
 	$data['updated_time'] = time();
+	$data['balance'] = user_balance();
 
 	$data = array_merge($data, $data_);
 
@@ -1574,6 +1581,12 @@ function is_ajax() {
 		return true;
 	}
 	return false;
+}
+
+function record_last_activity($user_id, $device = ""){
+    d()->where("id", $user_id);
+    d()->update("users", array("last_activity"=>time(), 'last_device'=> $device));
+    return true;
 }
 
 function post_set($key){
@@ -2362,7 +2375,7 @@ function is_mz(){
 function is_hillary(){
 
 
-	return false;
+//	return false;
 	return get_setting("is_hillary","", 1) == 1;
 }
 
@@ -2462,3 +2475,15 @@ function remove_underscore($value, $ucwords = true){
 function format_notification($message){
 	return preg_replace('/href="(\/)?([\w_\-\/\.\?&=@%#]*)"/i','href="'. ((isSecure()?"https://":"http://").domain_name()).'/$2"', $message);
 }
+
+
+
+function my_start_time(){
+    static $start_time = null;
+    if(empty($start_time)){
+        $start_time = time()."-".Date("H:i:s");
+    }
+    return $start_time;
+}
+
+my_start_time();

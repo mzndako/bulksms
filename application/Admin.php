@@ -47,13 +47,42 @@ class Admin extends CI_Controller
 	}
 
 	/***ADMIN DASHBOARD***/
-	function dashboard()
+	function dashboard($param1 = "", $param2 = "")
 	{
 		if (!$this->session->hAccess('login')) {
-		$this->session->set_flashdata('flash_message', "Please login first");
-		redirect(base_url() . "?login", 'refresh');
-	}
-//        $this->session->set_flashdata('flash_message' , "hello");
+            $this->session->set_flashdata('flash_message', "Please login first");
+            redirect(base_url() . "?login", 'refresh');
+        }
+
+        if($param1 == "subscribe_phase"){
+		    $phase = "phase$param2";
+		    $amount = parse_amount(get_setting("{$phase}_amount"));
+		    $duration = parse_amount(get_setting("{$phase}_period"));
+
+		    $bal = user_balance();
+
+		    if(empty($amount)){
+		        ajaxFormDie("Invalid Amount set for this phase");
+            }
+
+		    if($amount > $bal){
+		        ajaxFormDie("Insufficient Balance");
+            }
+
+            update_user_balance($amount);
+
+            $data['amount'] = $amount;
+            $data['bill_type'] = 'subscription';
+            $data['type'] = 'Phase 1 Subscription';
+            $data['recipient'] = $duration.' Months';
+		    insert_history($data);
+
+		    $data['vip_package'] = $param2;
+		    $data['vip_expires'] = time() + ($duration * 30 * 3600 * 24);
+		    d()->where("user_id", login_id());
+		    c()->update("users", $data);
+        }
+
 		$page_data['page_name'] = 'dashboard';
 		$page_data['page_title'] = get_phrase('admin_dashboard');
 		$this->load->view('backend/index', $page_data);

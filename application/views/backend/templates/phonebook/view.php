@@ -108,7 +108,7 @@
                                 ?>
                             </td>
                             <td>
-                                <?=convert_to_datetime($row['date']);?>
+                                <?=empty($row['date'])?"--":convert_to_datetime($row['date']);?>
                             </td>
 
 

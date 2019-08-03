@@ -205,8 +205,10 @@ class Epins extends CI_Controller
 
     public function category($param1 = ""){
         $data['name'] = $this->input->post("name");
-        $data['description'] = $this->input->post("description");
+        $data['description'] = parse_string($this->input->post("description"));
         $data['parent_id'] = $this->input->post("parent_id");
+        $data['amount'] = parse_amount($this->input->post("amount"));
+        $data['cost_price'] = parse_amount( $this->input->post("cost_price"));
 
         if(empty($data['parent_id']))
             $data['parent_id'] = 0;
@@ -226,7 +228,7 @@ class Epins extends CI_Controller
             $msg = "Successfully Updated";
         }
 
-        return return_function("view", $msg);
+        return return_function("manage", $msg);
 
     }
 
@@ -240,7 +242,7 @@ class Epins extends CI_Controller
 
         d()->group_end();
         c()->delete("epins_category");
-        return return_function("view", "Successfully Deleted");
+        return return_function("manage", "Successfully Deleted");
     }
 
 

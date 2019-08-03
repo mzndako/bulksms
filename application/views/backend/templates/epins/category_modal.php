@@ -47,13 +47,32 @@ foreach ( $edit_data as $row):
 
                 <div class="form-group">
                     <label class="bmd-label-floating">Name</label>
-                    <input type="text" class="form-control" name="name" value="<?=$array->get("name"); ?>"/>
+                    <input type="text" required class="form-control" name="name" value="<?=$array->get("name"); ?>"/>
                 </div>
 
-                <div class="form-group">
-                    <label class="bmd-label-floating">Description</label>
-                    <input type="text" class="form-control" name="description" value="<?=$array->get("description"); ?>"/>
-                </div>
+                <?php
+                    if(!empty($array->get("parent_id"))) {
+                        ?>
+                        <div class="form-group">
+                            <label class="bmd-label-floating">Description</label>
+                            <input type="text" class="form-control" name="description"
+                                   value="<?= $array->get("description"); ?>"/>
+                        </div>
+
+                        <div class="form-group required">
+                            <label class="bmd-label-floating">Amount (Selling Price)</label>
+                            <input type="text" required class="form-control number" name="amount"
+                                   value="<?= $array->get("amount"); ?>"/>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="bmd-label-floating">Cost Price (Optional)</label>
+                            <input type="text" class="form-control number" name="cost_price"
+                                   value="<?= $array->get("cost_price"); ?>"/>
+                        </div>
+                        <?php
+                    }
+ ?>
 
                 <?php
                     if(!empty($param1)) {

@@ -31,6 +31,8 @@ $pg = new PaymentMethods();
 						foreach ($payment as $key => $value):
 							if($key == "wallet")
 								continue;
+							if($key == "airtime")
+								continue;
 							?>
 							<option <?=p_selected($key == $method);?> value="<?php echo $key; ?>">
 								<?= $value; ?>

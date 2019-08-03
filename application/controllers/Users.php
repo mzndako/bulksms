@@ -62,8 +62,8 @@ class Users extends CI_Controller
 			}
 
 			if (!empty($llogin1) && !empty($llogin2)) {
-				d()->where("last_login >=", date2strtotime($llogin1));
-				d()->where("last_login <=", date2strtotime($llogin2));
+				d()->where("last_activity >=", date2strtotime($llogin1));
+				d()->where("last_activity <=", date2strtotime($llogin2));
 			}
 
 			if (!empty($param1)) {
@@ -280,6 +280,54 @@ class Users extends CI_Controller
 		$this->load->view('backend/index', $page_data);
 	}
 
+	function vip($param1 = "", $param2 = "")
+	{
+		rAccess("manage_vip");
+
+		if ($param1 == 'update') {
+			$phase1 = "phase1_amount,phase1_period,phase1_cost_sms_rate,phase1_cost_dnd_rate,phase1_cost_bill_rate";
+			$phase2 = str_replace("phase1","phase2", $phase1);
+			$array = string2array($phase1);
+			$array = array_merge($array, string2array($phase2));
+			foreach ($array as $key) {
+					set_setting($key, $this->input->post($key));
+			}
+
+            set_setting("phase_advantages", $this->input->post("phase_advantages"));
+
+			return return_function("vip", "Saved Successfully");
+		}
+
+		if ($param1 == 'remove') {
+			c()->where("user_id", $param2);
+			c()->update("users", array("rate"=>"", "dnd_rate"=>"", "gateway"=>"", "vip_package"=>0));
+			ajaxFormDie("Successfully Removed from the phase list");
+		}
+
+		if ($param1 == 'member_permission') {
+			$menu = new MenuBuilder();
+			$member = array();
+			foreach ($menu->get_menu(true) as $row) {
+				if($row['for_members'] != 1)
+					continue;
+				if (!empty($this->input->post("member_" . $row['id']))) {
+					$member[] = $this->input->post("member_" . $row['id']);
+				}
+
+			}
+
+			c()->save_setting("member_permission", empty($member) ? "" : implode(",", $member));
+
+			ajaxFormDie("Saved", "success");
+
+		}
+
+
+		$page_data['page_name'] = 'users/vip';
+		$page_data['page_title'] = 'Manage VIP Users';
+		$this->load->view('backend/index', $page_data);
+	}
+
 	function options($param1 = "", $param2 = ""){
 		this()->load->library("PaymentMethods");
 		$pg = new PaymentMethods();
@@ -432,7 +480,7 @@ class Users extends CI_Controller
 				foreach($fields as $f){
 					if ($f == 'user_id') {
 						d()->where("user_id", $param2);
-						c()->delete($tb);
+						d()->delete($tb);
 					}
 				}
 			}

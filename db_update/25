@@ -1,0 +1,3 @@
+ALTER TABLE notification MODIFY message TEXT NOT NULL;
+ALTER TABLE users ADD last_activity INT DEFAULT 0 NULL AFTER last_login2;
+ALTER TABLE users ADD last_device VARCHAR(200) DEFAULT "" NULL after last_activity;

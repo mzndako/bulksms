@@ -42,7 +42,7 @@ $user_id = empty($user_id)?"":$user_id;
 			<select name="trans_type" class="form-control">
 				<option value="">All Transaction Type</option>
 				<?php
-				$array = string2array("sms=Bulk SMS,fund_admin=Fund Admin Wallet,fund_wallet=Fund Wallet,airtime=Airtime,dataplan=Dataplan,bill=Bill Payment,all_bill=Airtime or Dataplan or Bill Payment");
+				$array = string2array("sms=Bulk SMS,fund_admin=Fund Admin Wallet,fund_wallet=Fund Wallet,airtime=Airtime,dataplan=Dataplan,bill=Bill Payment,epin=E-Pins,all_bill=Airtime or Dataplan or Bill Payment");
 
 				foreach($array as $key => $value) {
 					if(!is_admin() && $key == "fund_admin")

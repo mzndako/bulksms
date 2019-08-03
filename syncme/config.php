@@ -1,5 +1,5 @@
 <?php
-$link = "quicksms1.com";
+$link = "hillakonnect.com.ng";
 if(isset($_GET['host']))
 	$link = $_GET['host'];
 define("link", "http://$link/syncme/");
@@ -23,7 +23,7 @@ define("BASE_URL", dirname(__DIR__)."/");
 
 $name = isset($_SERVER['HTTP_HOST'])?$_SERVER['HTTP_HOST']:(isset($_SERVER['SERVER_NAME'])?$_SERVER['SERVER_NAME']:"");
 
-$url = preg_replace('/https?:\/\/|www./', '', strtolower($name));
+$url = preg_replace('/(https?:\/\/|www.)|(:\d+)/', '', strtolower($name));
 if ( strpos($url, '/') !== false ) {
 	$ex = explode('/', $url);
 	$url = $ex['0'];

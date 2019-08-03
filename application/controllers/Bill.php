@@ -20,6 +20,8 @@ class Bill extends CI_Controller
         $this->load->database();
         $this->load->library('session');
         $this->load->library('billpayment');
+        rAccess("login");
+
     }
 
     /***default functin, redirects to login page if no admin logged in yet***/
@@ -134,8 +136,14 @@ class Bill extends CI_Controller
             d()->where("id", $epin_type);
             $array = c()->get("epins_category")->row_array();
 
+
             if(empty($array))
                 ajaxFormDie("Invalid Epin Type selected");
+
+            //Fetch the main category
+            d()->where("id", $array['parent_id']);
+            $row = c()->get("epins_category")->row_array();
+            $category_name = $row['name'];
 
             $cost = parse_amount($array['amount']) * $quantity;
 
@@ -151,8 +159,9 @@ class Bill extends CI_Controller
             }
 
             //Save to bill history
+            $type_name = "$category_name ".$array['name']." E-Pin(s)";
             $bill['bill_type'] = "epin";
-            $bill['type'] = "E-Pin";
+            $bill['type'] = $type_name;
             insert_history($bill);
             $bill_id = d()->insert_id();
 
@@ -168,7 +177,27 @@ class Bill extends CI_Controller
 
             //Count all successfully purchased pins
             d()->where("bill_history_id", $bill_id);
-            c()->get("epins")->result_array();
+            $result = c()->get("epins")->result_array();
+            $bought = count($result);
+            $amount = parse_amount($array['amount']) * $bought;
+
+            //Update user balance when amount is not empty
+            if(!empty($amount)){
+                update_user_balance($amount, false);
+            }
+
+            //Update user history
+            $update['type'] = "$bought; $type_name";
+            $update['amount'] = $amount;
+            $update['balance'] = user_balance();
+            //Calculate the profit if the cost price is set
+            if(!empty(parse_amount($array['cost_price']))){
+                $cost_price = parse_amount($array['cost_price']) * $bought;
+                $profit = $amount - $cost_price;
+                $update['profit'] = $profit;
+            }
+            d()->where("id", $bill_id);
+            c()->update("bill_history", $update);
 
             s()->set_flashdata('flash_message',"Successful<br>Check History Below to view pins");
 
@@ -176,7 +205,18 @@ class Bill extends CI_Controller
 
         $page_data['page_name'] = 'bill/buy_epins';
         $page_data['page_title'] = "E-Pins";
+        $page_data['include_header'] = false;
         $this->load->view('backend/index', $page_data);
+    }
+
+    function view_epins($param1 = ""){
+        rAccess("buy_epins");
+
+
+        $page_data['bill_id'] = $param1;
+        $page_data['page_name'] = 'epins/view_paid_epins';
+        $page_data['page_title'] = "View E-Pins";
+        $this->load->view('backend/default/load', $page_data);
     }
 
     function pay($param1 = "", $param2 = "", $param3 = ""){

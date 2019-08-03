@@ -72,22 +72,27 @@
     <?php $color = tcolor($skin_color); ?>
 
     .template-background, .panel-heading{
-        background-color: <?=tcolor($skin_color);?> !important;
+        /*background-color: */<?//=tcolor($skin_color);?>/* !important;*/
+        background-color: #ebebeb !important;
         color: white !important;;
+    }
+
+    .panel-heading > .panel-title{
+        color: black !important;;
     }
 
     .panel-heading .panel-title{
-        border-color: <?=$color;?>;
-        color: white !important;;
+        /*border-color: */<?//=$color;?>/*;*/
+        /*color: white !important;;*/
     }
 
     .panel{
-        border-color: <?=$color;?> !important;
-        border-radius: 2px;
-        -webkit-box-shadow: 0 1px 25px 1px <?=$color;?>;
-        box-shadow: 0 1px 15px 1px <?=$color;?>;
-        box-shadow: 0 1px 15px 1px <?=$color;?>;
-        margin-top: 10px;
+        /*border-color: */<?//=$color;?>/* !important;*/
+        /*border-radius: 2px;*/
+        /*-webkit-box-shadow: 0 1px 25px 1px */<?//=$color;?>/*;*/
+        /*box-shadow: 0 1px 15px 1px */<?//=$color;?>/*;*/
+        /*box-shadow: 0 1px 15px 1px */<?//=$color;?>/*;*/
+        /*margin-top: 10px;*/
     }
 
     .panel-body{
@@ -95,28 +100,29 @@
     }
 
     .template-color{
-        color: <?=tcolor($skin_color);?> !important;
+        /*color: */<?//=tcolor($skin_color);?>/* !important;*/
     }
 
     .template-hover:hover{
-        opacity: 0.5 !important;
+        /*opacity: 0.5 !important;*/
     }
 
     .table thead th{
-        background: <?=$color;?> !important;
-        color: white !important;
+        /*background: */<?//=$color;?>/* !important;*/
+        background: #f5f5f6 !important;
+        color: #6e6e70 !important;
     }
 
     .btn-template{
-        background: <?=$color;?> !important;
-        border-color: <?=$color;?> !important;
-        color: white !important;
+        /*background: */<?//=$color;?>/* !important;*/
+        /*border-color: */<?//=$color;?>/* !important;*/
+        /*color: white !important;*/
     }
 
     input[type="checkbox"]:checked:after, .checkbox input[type="checkbox"]:checked:after, .checkbox-inline input[type="checkbox"]:checked:after {
-        background-color: <?=$color;?>;
-        border-color: <?=$color;?>;
-        border-color: <?=$color;?>;
+        /*background-color: */<?//=$color;?>/*;*/
+        /*border-color: */<?//=$color;?>/*;*/
+        /*border-color: */<?//=$color;?>/*;*/
     }
 
     .inactive{

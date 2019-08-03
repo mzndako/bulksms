@@ -10,6 +10,7 @@
 	<script src="<?=assets_url("$theme_path/js/jquery-ui/js/jquery-ui-1.10.3.minimal.min.js");?>"></script>
 	<script src="<?=assets_url("$theme_path/js/bootstrap.js");?>"></script>
 	<script src="<?=assets_url("$theme_path/js/joinable.js");?>"></script>
+	<script src="<?=assets_url("$theme_path/js/printThis.js");?>"></script>
 	<script src="<?=assets_url("$theme_path/js/resizeable.js");?>"></script>
 	<script src="<?=assets_url("$theme_path/js/neon-api.js");?>"></script>
 	<script src="<?=assets_url("$theme_path/js/toastr.js");?>"></script>
@@ -271,6 +272,12 @@ function my_alert($text, $type, onclick_, $title, $confirmText){
 				}});
 		}, $title, "OK. I have Read");
 	}
+
+    function printThis(id, header){
+        $(id).printThis({
+            header: header == undefined?"":header
+        });
+    }
 //	$('select').select2();
 		
 </script>

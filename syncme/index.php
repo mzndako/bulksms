@@ -4,7 +4,7 @@ include_once 'config.php';
 
 
 if (empty($_POST)) {
-	if($url != "localhost")
+  if($url != "localhost")
 		die("You are a server. cant start a connection");
 
 	if (isset($_GET['check']) || isset($_GET['show']) || isset($_GET['update']) || isset($_GET['update_all'])) {

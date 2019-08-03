@@ -11,7 +11,7 @@ if(empty($array))
 
 extract($array);
 	?>
-	<div class="row">
+	<div class="row" id="history_modal">
 		<div class="col-md-12">
 			<div class="panel panel-primary b-w-0" data-collapsed="0">
 
@@ -33,7 +33,7 @@ extract($array);
 
 				<div class="history_modal">
 				<?php
-					if(is_admin()) {
+					if(is_admin() || ($bill_type == "fund_wallet" && $array['user_id'] == login_id())) {
 						?>
 						<div>
 							<span class="mf">Username:</span> <span class="ms"><?= c()->get_full_name($array['user_id']); ?></span>
@@ -115,6 +115,9 @@ extract($array);
 							<div>
 								<span class="mf">Total Paid:</span> <span class="ms"><?= format_wallet($array['amount'] + $transaction_fee); ?></span>
 							</div>
+                            <div>
+								<span class="mf">Payment Method:</span> <span class="ms"><?php $method = $array['payment_method']; echo strtoupper($method == "atm"?"debit/credit card":$method); ?></span>
+							</div>
                             <br>
 							<div>
 								<b><span class="mf">STATUS:</span></b> <span class="ms"><?= $array['status']; ?></span>
@@ -127,13 +130,81 @@ extract($array);
 						<span class="mf">Balance:</span> <span class="ms"><?= format_wallet($balance); ?></span>
 					</div>
 
+                    <?php
+                    if($bill_type == "epin"){
+                        d()->where("bill_history_id", $param1);
+                        $result = c()->get("epins")->result_array();
+                        $has_serial = false;
+                        foreach($result as $row){
+                            if(!empty(trim($row['serial'])))
+                                $has_serial = true;
+                        }
+                        ?>
+                        <br>
+<b><?=count($result);?> E-Pins</b><br>
+
+                    <div align="center">
+                    <a href="<?=url("bill/view_epins/$param1");?>" target="_blank"
+                       class="btn btn-warning btn-raised"><?php echo "Print Pins";
+                        ?></a>
+                    </div>
+                        <div style="max-height: 200px; margin-top: 5px; overflow: auto">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>S/N</th>
+                                    <?php
+                                    if($has_serial) {
+                                        ?>
+                                        <th>Serial No</th>
+                                        <?php
+                                    }
+                                    ?>
+                                    <th>PINS</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                <?php
+                                $count = 1;
+                                foreach($result as $row) {
+                                    ?>
+                                    <tr>
+                                        <td><?=$count++;?></td>
+                                        <?php
+                                        if($has_serial) {
+                                            ?>
+                                            <td><?=$row['serial'];?></td>
+                                            <?php
+                                        }
+                                        ?>
+                                        <td><?=$row['pin'];?>
+                                    </tr>
+                                    <?php
+                                }
+                                ?>
+                                </tbody>
+                            </table>
+                        </div>
+                        <?php
+                    }
+                    ?>
+
+
 
 
 
 
 				<div class="col-md-12" align="center">
-<!--					<button type="submit" onclick="printThis" class="btn btn-primary btn-raised">--><?php //echo "Print";
-//						?><!--</button>-->
+                    <?php
+                         if($bill_type != "epin"){
+                            ?>
+                            <div onclick="printThis('#history_modal')"
+                                    class="btn btn-warning btn-raised"><?php echo "Print";
+                                ?></div>
+                            <?php
+                        }
+                    ?>
 				</div>
 				</div>
 				</form>

@@ -211,6 +211,7 @@ class Api_model extends CI_Model {
                 }
                 return false;
             }
+            record_last_activity($row['id'], 'API');
             return $row;
         }else{
             if($die)
@@ -238,6 +239,23 @@ class Api_model extends CI_Model {
 
         d()->insert("delivery_report", $data);
 
+    }
+
+    function receive_bill_report($from){
+        if($from == "africastalking"){
+            $status = trim(strtolower($this->input->post('status')));
+            $requestId = $this->input->post('requestId');
+
+            if(!empty($requestId)){
+                $status = $status == "success" || $status == "sent"?"ORDER_COMPLETED":"ORDER_ONHOLD";
+                $data['status'] = $status;
+                $data['remark'] = $status == "ORDER_COMPLETED"?"Successful":$this->input->post('status');
+                d()->where("order_id", $requestId);
+                d()->limit(1);
+                d()->update("bill_history", $data);
+            }
+        }
+        print "Done";
     }
 
     private function fetch($key, $default = ""){

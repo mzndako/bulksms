@@ -105,7 +105,7 @@ class User {
 	var $token = "";
 	public $user_count = 0;
 
-	function User($user=0, $columns="id") {
+	function __construct($user=0, $columns="id") {
 		if(!empty($user))
 			$this->set_user($user, $columns);
 	}
